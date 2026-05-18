@@ -27,7 +27,17 @@ app.get('/api/transparency', async (req, res) => {
   }
 });
 
-// Add more routes here to replace the Next.js Server Actions...
+app.get('/api/carousel', async (req, res) => {
+  try {
+    const slides = await prisma.carouselSlide.findMany({
+      orderBy: { createdAt: "desc" },
+    });
+    res.json({ success: true, data: slides });
+  } catch (error) {
+    console.error("Error fetching carousel slides:", error);
+    res.status(500).json({ success: false, error: "Failed to fetch slides" });
+  }
+});
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
