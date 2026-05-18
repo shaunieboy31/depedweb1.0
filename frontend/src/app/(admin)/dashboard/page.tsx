@@ -4,6 +4,8 @@ import DashboardClient from "./DashboardClient";
 import React, { Suspense } from "react";
 import { RefreshCcw } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminDashboardPage() {
   const session = await getSession();
 

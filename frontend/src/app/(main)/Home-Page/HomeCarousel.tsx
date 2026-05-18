@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, Image as ImageIcon } from "lucide-react";
-import { getCarouselSlidesAction } from "@/controllers/carousel";
+
 
 export function HomeCarousel() {
   const [currentSlide, setCurrentSlide] = useState<number>(0);
@@ -12,11 +12,17 @@ export function HomeCarousel() {
 
   useEffect(() => {
     async function loadSlides() {
-      const result = await getCarouselSlidesAction();
-      if (result.success && result.data && result.data.length > 0) {
-        setSlides(result.data);
+      try {
+        const response = await fetch("http://localhost:5000/api/carousel");
+        const result = await response.json();
+        if (result.success && result.data && result.data.length > 0) {
+          setSlides(result.data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch slides from API:", error);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     }
     loadSlides();
   }, []);
